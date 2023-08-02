@@ -1,0 +1,62 @@
+﻿@page
+@model WebTest.Pages.Employee_DetailsModel
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="container">
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmpName">Employee ID:</label>
+            </div>
+            <div class="col-5">
+                <input id="txtEmpID" name="txtEmpID" value="@Model.employeeData.empId" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmpName">Employee Name:</label>
+            </div>
+            <div class="col-5">
+                <input id="txtEmpName" name="txtEmpName" value="@Model.employeeData.empName" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtMobileNo">Mobile No:</label>
+            </div>
+            <div class="col-3">
+                <input type="text" id="txtMobileNo" name="txtMobileNo" value="@Model.employeeData.MobileNo" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmail">Email:</label>
+            </div>
+            <div class="col-lg-3">
+                <input type="text" id="txtEmail" name="txtEmail" value="@Model.employeeData.email" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <button name="btnEdit" class="btn btn-success" style="width: 120px;">Edit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    //function EditEmployees() {
+    //    var empID = document.getElementById("txtEmpID").value;
+    //    window.location.assign("Employee_Edit?EmpID=" + empID);
+    //}
+
+</script>

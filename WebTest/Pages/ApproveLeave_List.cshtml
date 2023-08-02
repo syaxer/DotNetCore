@@ -1,0 +1,108 @@
+﻿@page
+@model WebTest.Pages.ApproveLeave_ListModel
+@{
+    ViewData["Title"] = "Leave List";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form method="post">
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-2 text-center" style="padding-top: 5px;">
+                <Label for="lblEmp">Employee Name :</Label>
+            </div>
+            <div class="col-5">
+                <input type="text" id="txtEmpName" name="txtEmpName" class="form-control form-control-sm" width="200" />
+            </div>
+        </div>
+        <div class="row" style="padding-top: 9px;">
+            <div class="col-2 text-center" style="padding-top: 5px;">
+                <Label for="lblEmp">Employee ID :</Label>
+            </div>
+            <div class="col-5">
+                <input type="text" id="txtEmpID" name="txtEmpID" class="form-control form-control-sm" Width="200" />
+            </div>
+        </div>
+        <br />
+        @*<div class="row">
+            <div class="col-2">
+                <input type="submit" id="btnSearch" value="Search" class="btn btn-sm btn-block btn-info" />
+            </div>
+        </div>
+        <br />*@
+        <div class="table-responsive">
+            <table id="myTable" class="table table-bordered" style="width:100%">               
+                <thead class="bg-dark text-light">
+                    <tr>
+                        <th style="width:7%">No.</th>
+                        <th></th>
+                        <th>Leave ID</th>
+                        <th style="width:12%">Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Leave Type</th>
+                        <th>Justification</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tdEmp">
+                    @if (Model.employeeParameterList.Count > 0)
+                    {
+                        @foreach (var employee in Model.employeeParameterList)
+                        {
+                    <tr id="trRow">
+                        <td>@employee.NumCount</td>
+                        <td><img src="~/images/edit.png" class="picEdit" style="cursor:pointer;" /></td>
+                        <td>@employee.LeaveID</td>
+                        <td>@employee.empId</td>
+                        <td>@employee.empName</td>
+                        <td>@employee.StartDt</td>
+                        <td>@employee.EndDt</td>
+                        <td>@employee.LeaveTypeName</td>
+                        <td>@employee.justification</td>
+                        <td>@employee.statusLeave</td>
+                    </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="bg-danger text-light text-center"><strong>No Record</strong></td>
+                        </tr>
+                    }
+                </tbody>
+                
+            </table>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#txtEmpName").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tdEmp tr").filter(function () {
+                $(this).toggle($(this.children[4]).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    
+        $("#txtEmpID").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tdEmp tr").filter(function () {
+                $(this).toggle($(this.children[3]).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+      
+
+        $(".picEdit").on('click', function () {
+            var currentRow = $(this).closest("tr");
+            var LeaveID = currentRow.find("td:eq(2)").html();
+            var empID = currentRow.find("td:eq(3)").html();
+
+            window.location.assign("ApproveLeave_Add?EmpID=" + empID + "&LeaveID=" + LeaveID);
+        });
+    });
+
+</script>

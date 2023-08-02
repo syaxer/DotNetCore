@@ -1,0 +1,29 @@
+﻿@page
+@model WebTest.Pages.Employee_ListModel
+@{
+    ViewData["Title"] = "Employee Listing";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+<div class="table-responsive mt-3">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="bg-dark text-light">Employee ID</th>
+                <th class="bg-dark text-light">Employee Name</th>
+                <th class="bg-dark text-light">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.employeeParameterList)
+            {
+                <tr>
+                    <td>@employee.empId</td>
+                    <td>@employee.empName</td>
+                    <td>@employee.email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

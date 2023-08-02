@@ -1,0 +1,43 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Employee Profile";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Welcome <strong>@ViewData["username"]</strong></p>
+
+<p>
+    Employee Name : <strong>@Model.employeeData.empName</strong>
+    <br />
+    Email : @Model.employeeData.email
+    <br />
+    Mobile No : @Model.employeeData.MobileNo
+</p>
+<br />
+<form method="post">
+    <input type="submit" name="btnLogut" value="Logout" class="btn btn-danger" style="width: 110px;" onclick="return confirmLogout()" />
+</form>
+
+<script type="text/javascript">
+
+    function confirmLogout() {
+
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+
+        var msg = "Are you sure you want to logout?";
+        var accept = confirm(msg);
+
+        if (accept == true) {
+            confirm_value.value = "Yes";
+        } else {
+            confirm_value.value = "No";
+        }
+
+        document.forms[0].appendChild(confirm_value);
+    }
+
+</script>

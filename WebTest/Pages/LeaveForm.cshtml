@@ -1,0 +1,159 @@
+﻿@page
+@model WebTest.Pages.LeaveFormModel
+@{
+    //Layout = null;
+    ViewData["Title"] = "Leave Form";
+}
+
+<h2 class="pt-3 text-center">@ViewData["Title"]</h2>
+<br />
+<form method="post">
+    <div class="container">
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="FormData.EmpName"></label>
+            </div>
+            <div class="col-5">
+                @*<input id="txtEmpName" name="txtEmpName" value="@Model.leaveFormData.EmpName" class="form-control" readonly="readonly" />*@
+                <input asp-for="FormData.EmpName" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="FormData.StartDt"></label>
+            </div>
+            <div class="col-3">
+                @*<input type="text" id="txtStartDt" name="txtStartDt" class="form-control" autocomplete="off" data-val-required="Start Date is required." data-val="true" />
+        <span class="text-danger" data-valmsg-for="txtStartDt" data-valmsg-replace="true" />*@
+                <input asp-for="FormData.StartDt" class="form-control" />
+                <span asp-validation-for="FormData.StartDt" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="FormData.EndDt"></label>
+            </div>
+            <div class="col-3">
+                @*<input type="text" id="txtEndDt" name="txtEndDt" class="form-control" autocomplete="off" data-val-required="End Date is required." data-val="true" />
+        <span class="text-danger" data-valmsg-for="txtEndDt" data-valmsg-replace="true" />*@
+                <input asp-for="FormData.EndDt" class="form-control" />
+                <span asp-validation-for="FormData.EndDt" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label>Leave Type:</label>
+            </div>
+            <div class="col-5">
+                <select name="SelectedType" id="SelectedType" class="form-control input-lg" asp-items="@(new SelectList(Model.leaveList, "LeaveTypeVal", "LeaveTypeName"))">
+                    @*@foreach (var type in Model.leaveList)
+                    {
+                        <option value="@type.LeaveTypeVal">@type.LeaveTypeName</option>
+                    }*@
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="FormData.Justification"></label>
+            </div>
+            <div class="col-5">
+                @*<textarea id="txtJustification" name="txtJustification" rows="3" class="form-control" data-val-required="Justification is required." data-val="true"></textarea>
+        <span class="text-danger" data-valmsg-for="txtJustification" data-valmsg-replace="true" />*@
+                <textarea asp-for="FormData.Justification" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="FormData.Justification" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label>Manager Name:</label>
+            </div>
+            <div class="col-5">
+                <select name="SelectedName" id="SelectedName" class="form-control input-lg">
+                    @foreach (var list in Model.managerList)
+                    {
+                        <option value="@list.empId">@list.empName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-success" style="width: 120px;" onclick="confirmation()">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    //$("form").validate();
+
+    $(function () {
+
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+        $('#FormData_StartDt').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            format: 'yyyy-mm-dd',
+            minDate: today,
+            maxDate: function () {
+                return $('#FormData_EndDt').val();
+            }
+        });
+
+        $('#FormData_EndDt').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            format: 'yyyy-mm-dd',
+            minDate: function () {
+                return $('#FormData_StartDt').val();
+            }
+        });
+
+    });
+
+    function confirmation() {
+
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+
+        var msg = "Do you want to submit?";
+        var confirmation = confirm(msg);
+
+        if (confirmation == true) {
+            confirm_value.value = "Submit";
+        } else {
+            confirm_value.value = "No";
+        }
+
+        document.forms[0].appendChild(confirm_value);
+    }
+
+    function showAlert() {
+        alert("Please insert all fields!");
+    }
+
+    function showSuccess() {
+        alert("Leave successfully submitted");
+    }
+</script>
+
+@if (ViewData["JavaScriptFunction"] != null)
+{
+    <script type="text/javascript">@ViewData["JavaScriptFunction"]</script>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

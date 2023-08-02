@@ -1,0 +1,148 @@
+﻿@page
+@model WebTest.Pages.TestApi.Employee_Edit_ApiModel
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="container">
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="EmployeeData.EmpId"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="EmployeeData.EmpId" class="form-control" readonly="readonly" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="EmployeeData.EmpName"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="EmployeeData.EmpName" class="form-control" readonly="readonly" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="EmployeeData.Email"></label>
+            </div>
+            <div class="col-3">
+                <input asp-for="EmployeeData.Email" class="form-control" />
+                <span class="text-danger" asp-validation-for="EmployeeData.Email" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="EmployeeData.MobileNo"></label>
+            </div>
+            <div class="col-lg-3">
+                <input asp-for="EmployeeData.MobileNo" class="form-control" />
+                <span class="text-danger" asp-validation-for="EmployeeData.MobileNo" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <button id="btnUpdate" name="btnUpdate" class="btn btn-success" style="width: 120px;" onclick="confirmation()">Update</button>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-info" style="width: 120px;" asp-page-handler="Back">Back</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    const urlParams = new URLSearchParams(window.location.search);
+    var EmpID;
+
+    for (const value of urlParams.values()) {
+        EmpID = value;
+    }
+   
+    //const uri = 'http://localhost:81/WebAPI/api/EmployeeDetails/' + EmpID;
+    const uri = 'http://localhost:81/WebAPI/api/EmployeeDetails';
+    let records = [];
+
+    getEmployee();
+
+    function getEmployee() {     
+        fetch(`${uri}/${EmpID}`)
+            .then(response => response.json())
+            .then(data => _displayEmployees(data))
+            .catch(error => console.error('Unable to get items.', error));
+    }
+
+    function _displayEmployees(data) {
+     
+        records = data;
+
+        const recordValues = Object.values(data);
+
+        document.getElementById("EmployeeData_EmpId").value = recordValues[0];
+        document.getElementById("EmployeeData_EmpName").value = recordValues[1];
+        document.getElementById("EmployeeData_Email").value = recordValues[2];
+        document.getElementById("EmployeeData_MobileNo").value = recordValues[3];
+    }
+
+    function updateDetails() {
+        const itemId = document.getElementById('EmployeeData_EmpId').value;
+        const item = {
+            empID: parseInt(itemId, 10),
+            empName: document.getElementById('EmployeeData_EmpName').value.trim(),
+            email: document.getElementById('EmployeeData_Email').value.trim(),
+            mobileNo: document.getElementById('EmployeeData_MobileNo').value.trim()
+        };
+
+        fetch(`${uri}/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        })
+            .then(() => getEmployee())
+            .catch(error => console.error('Unable to update item.', error));
+
+        showSuccess();
+
+        return false;
+    }
+
+    function confirmation() {
+
+        var email = document.getElementById('EmployeeData_Email').value.trim();
+        var mobileNo = document.getElementById('EmployeeData_MobileNo').value.trim();
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+      
+        if (email == "" || mobileNo == "") {
+            alert("Please insert email and mobile no.");
+        } else {
+            var msg = "Do you want to update?";
+            var confirmation = confirm(msg);
+
+            if (confirmation == true) {
+                updateDetails();
+                confirm_value.value = "Submit";
+            } else {
+                confirm_value.value = "No";
+            }
+        }
+
+        document.forms[0].appendChild(confirm_value);
+    }
+
+    function showSuccess() {
+        alert("Details successfully updated");
+    }
+
+</script>

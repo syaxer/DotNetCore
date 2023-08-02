@@ -1,0 +1,46 @@
+﻿@page
+@model WebTest.Pages.LeaveModel
+@{
+    ViewData["Title"] = "Leave";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container-fluid">
+    <form method="post">
+        Employee Name:
+        <br />
+        <select name="SelectedEmployee" id="SelectedEmployee" class="form-control input-lg" onchange="this.form.submit()">
+            <option value="0">Select Employee</option>
+            @foreach (var employee in Model.employeeList)
+            {
+                @if (Model.employeeData.empId == employee.empId)
+                {
+                    <option value="@employee.empId" selected>@employee.empName</option>
+                }
+                else
+                {
+                    <option value="@employee.empId">@employee.empName</option>
+                }
+            }
+        </select>
+    </form>
+    <br />
+
+    @if (@Model.employeeData.empName != null)
+    {
+        <p>Employee Information:</p>
+
+        <p>
+            Employee Name: <strong>@Model.employeeData.empName</strong>
+            <br />
+            Justification: @Model.employeeData.justification
+            <br />
+            Status: @Model.employeeData.statusLeave
+        </p>
+    }
+    else
+    {
+        <p>Employee Information: No Information</p>
+    }
+</div>

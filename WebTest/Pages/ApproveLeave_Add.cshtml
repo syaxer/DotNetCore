@@ -1,0 +1,138 @@
+﻿@page
+@model WebTest.Pages.ApproveLeave_AddModel
+@{
+    ViewData["Title"] = "Approval";
+}
+
+<h2 class="pt-3">@ViewData["Title"]</h2>
+
+<br />
+<div class="container">
+    <form method="post">
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtEmpName">Employee Name:</label>
+            </div>
+            <div class="col-lg-5">
+                <input type="text" name="txtEmpName" value="@Model.employeeData.empName" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtStartDt">Start Date:</label>
+            </div>
+            <div class="col-lg-3">
+                <input type="text" name="txtStartDt" value="@Model.employeeData.StartDt" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtEndDt">End Date:</label>
+            </div>
+            <div class="col-lg-3">
+                <input type="text" name="txtEndDt" value="@Model.employeeData.EndDt" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtLeaveType">Leave Type:</label>
+            </div>
+            <div class="col-lg-5">
+                <input type="text" name="txtLeaveType" value="@Model.employeeData.LeaveTypeName" class="form-control" readonly />
+                <input type="text" name="txtLeaveTypeValue" value="@Model.employeeData.LeaveTypeVal" class="form-control d-none" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtJustification">Justification:</label>
+            </div>
+            <div class="col-lg-5">
+                <textarea rows="2" name="txtJustification" class="form-control" readonly>@Model.employeeData.justification</textarea>
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                <label for="txtManager">Manager Name:</label>
+            </div>
+            <div class="col-lg-5">
+                <input type="text" name="txtManager" value="@Model.employeeData.ManagerName" class="form-control" readonly />
+            </div>
+        </div>
+        @if (Model.employeeData.statusLeave == "Open")
+        {
+            <br />
+            <div class="form-row">
+                <div class="col-lg-2">
+                    <asp:Label ID="lblApproval" runat="server">Approval:</asp:Label>
+                </div>
+
+                <div class="col-lg-5">
+                    <select name="SelectedApproval" class="form-control input-lg">
+                        @foreach (var type in Model.LookupList)
+                        {
+                            <option value="@type.SystemParamValue">@type.SystemParamText</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+        <br />
+        <div class="form-row">
+            <div class="col-lg-2">
+                @if (Model.employeeData.statusLeave == "Open")
+                {
+                    <input type="submit" name="btnSubmit" class="btn btn-success" style="width: 120px;" value="Submit" onclick="confirmation()" />
+                }
+                else
+                {
+                    <input type="submit" name="btnSubmit" class="btn btn-success" style="width: 120px;" value="Submit" disabled />
+                }
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-info" style="width: 120px;" asp-page-handler="Back">Back</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    function confirmation() {
+
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+
+        var msg = "Do you want to submit?";
+        var confirmation = confirm(msg);
+
+        if (confirmation == true) {
+            confirm_value.value = "Submit";
+        } else {
+            confirm_value.value = "No";
+        }
+
+        document.forms[0].appendChild(confirm_value);
+    }
+
+    function showSuccess() {
+        alert("Approval successfully submitted");
+    }
+</script>
+
+@if (ViewData["JavaScriptFunction"] != null)
+{
+    <script type="text/javascript">@ViewData["JavaScriptFunction"]</script>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

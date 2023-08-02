@@ -1,0 +1,94 @@
+﻿@page
+@model WebTest.Pages.Employee_EditModel
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="container">
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmpName">Employee ID:</label>
+            </div>
+            <div class="col-5">
+                <input id="txtEmpID" name="txtEmpID" value="@Model.employeeDetails.empId" class="form-control" readonly />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmpName">Employee Name:</label>
+            </div>
+            <div class="col-5">
+                <input id="txtEmpName" name="txtEmpName" value="@Model.employeeDetails.empName" class="form-control" data-val-required="Employee Name is required." data-val="true" />
+                <span class="text-danger" data-valmsg-for="txtEmpName" data-valmsg-replace="true" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtMobileNo">Mobile No:</label>
+            </div>
+            <div class="col-3">
+                <input type="text" id="txtMobileNo" name="txtMobileNo" value="@Model.employeeDetails.MobileNo" class="form-control" data-val-required="Mobile No. is required." data-val="true" />
+                <span class="text-danger" data-valmsg-for="txtMobileNo" data-valmsg-replace="true" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <label for="txtEmail">Email:</label>
+            </div>
+            <div class="col-lg-3">
+                <input type="text" id="txtEmail" name="txtEmail" value="@Model.employeeDetails.email" class="form-control" data-val-required="Email is required." data-val="true" />
+                <span class="text-danger" data-valmsg-for="txtEmail" data-valmsg-replace="true" />
+            </div>
+        </div>
+        <br />
+        <div class="form-row">
+            <div class="col-2">
+                <button id="btnUpdate" name="btnUpdate" class="btn btn-success" style="width: 120px;" onclick="confirmation()">Update</button>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-info" style="width: 120px;" asp-page-handler="Back">Back</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $("form").validate();
+
+    function confirmation() {
+
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+
+        var msg = "Do you want to update?";
+        var confirmation = confirm(msg);
+
+        if (confirmation == true) {
+            confirm_value.value = "Submit";
+        } else {
+            confirm_value.value = "No";
+        }
+
+        document.forms[0].appendChild(confirm_value);
+    }
+
+    function showSuccess() {
+        alert("Details successfully updated");
+    }
+
+</script>
+
+@if (ViewData["JavaScriptFunction"] != null)
+{
+    <script type="text/javascript">
+        @ViewData["JavaScriptFunction"]
+    </script>
+}

@@ -1,0 +1,26 @@
+﻿@page
+@model WebTest.Pages.HomeModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div>
+    <h1 class="display-4">Employee</h1>
+
+    <form method="post">
+        Employee ID:
+        <br />
+        <input name="EmpID" type="text" class="form-control input-lg" autofocus required />
+        <br />
+        <input id="OKButton" type="submit" value="OK" class="btn btn-success" />
+    </form>
+    <br />
+    @if (@Model.employeeData.empName != null)
+    {
+        <p>Employee Information:</p>
+        <p>
+            Employee Name: <strong>@Model.employeeData.empName</strong>
+            <br />
+            Email: @Model.employeeData.email
+        </p>
+    }
+</div>

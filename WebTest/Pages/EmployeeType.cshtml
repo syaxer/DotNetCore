@@ -1,0 +1,29 @@
+﻿@page
+@model WebTest.Pages.EmployeeTypeModel
+@{
+    ViewData["Title"] = "Employee Type";
+}
+
+<script>
+    function ShowEmployees() {
+        var employeeType = document.getElementById("SelectedType").value;
+        window.location.href = "ShowEmployee?EmployeeType=" + employeeType;
+    }
+</script>
+<div>
+    <h1>@ViewData["Title"]</h1>
+    <form method="post">
+        Employee Type:
+        <br />
+        <select name="SelectedType" id="SelectedType" class="form-control input-lg">
+            <option value="0">Select Type</option>
+
+            @foreach (var type in Model.employeeList)
+            {
+                <option value="@type.EmployeeType">@type.EmployeeTypeName</option>
+            }
+        </select>
+    </form>
+    <br />
+    <input type="button" value="Show Employees" onclick="javascript:ShowEmployees()" class="btn btn-success" />
+</div>

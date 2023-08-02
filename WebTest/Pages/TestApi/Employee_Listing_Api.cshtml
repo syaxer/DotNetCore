@@ -1,0 +1,77 @@
+﻿@page
+@model WebTest.Pages.TestApi.Employee_Listing_ApiModel
+@{
+    ViewData["Title"] = "Employee Listing With API";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="table-responsive mt-3">
+    <table class="table table-bordered">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th style="width:12%">Employee ID</th>
+                <th>Employee Name</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="getrec">
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    const uri = 'http://localhost:81/WebAPI/api/EmployeeDetails';
+    let records = [];
+
+    getEmployee();
+
+    function getEmployee() {
+        fetch(uri)
+            .then(response => response.json())
+            .then(data => _displayEmployees(data))
+            .catch(error => console.error('Unable to get items.', error));
+    }
+
+    function _displayEmployees(data) {
+        const tBody = document.getElementById('getrec');
+        //tBody.innerHTML = '';
+
+        //_displayCount(data.length);
+
+        const button = document.createElement('button');
+
+        data.forEach(item => {
+            let editButton = button.cloneNode(false);
+            editButton.innerText = 'Edit';
+            editButton.setAttribute('class', 'btn btn-success')
+            editButton.setAttribute('onclick', `window.location.assign("/TestApi/Employee_Edit_Api?EmpID=" + ${item.empID})`);
+
+            let tr = tBody.insertRow();
+
+            let td1 = tr.insertCell(0);
+            let textEmpID = document.createTextNode(item.empID);
+            td1.appendChild(textEmpID);
+
+            let td2 = tr.insertCell(1);
+            let textEmpName = document.createTextNode(item.empName);
+            td2.appendChild(textEmpName);
+
+            let td3 = tr.insertCell(2);
+            let textEmail = document.createTextNode(item.email);
+            td3.appendChild(textEmail);
+
+            let td4 = tr.insertCell(3);
+            let textMobile = document.createTextNode(item.mobileNo);
+            td4.appendChild(textMobile);
+
+            let td5 = tr.insertCell(4);
+            td5.setAttribute("class", "text-center")
+            td5.appendChild(editButton);
+        });
+
+        records = data;
+    }
+</script>
